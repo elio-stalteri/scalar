@@ -110,8 +110,9 @@ export type RequestBodyMimeTypes = {
 }
 
 export type ScalarResponse = {
-  description: string
-  content: any
+  'x-show-body'?: boolean
+  'description': string
+  'content': any
 }
 
 export type RequestBody = {

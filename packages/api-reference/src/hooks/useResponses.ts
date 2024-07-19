@@ -1,4 +1,4 @@
-import type { TransformedOperation } from '@scalar/oas-utils'
+import type { Schema, TransformedOperation } from '@scalar/oas-utils'
 import { computed } from 'vue'
 
 /**
@@ -10,13 +10,26 @@ export function useResponses(operation: TransformedOperation) {
 
     const { responses } = operation.information
 
-    const res: { name: string; description: string }[] = []
+    const res: {
+      name: string
+      description: string
+      schema?: Schema
+    }[] = []
 
     if (responses) {
       Object.keys(responses).forEach((statusCode: string) => {
+        if (
+          !responses[statusCode]?.['content']?.['application/json']?.['schema']
+        ) {
+          console.log('response', statusCode, responses[statusCode])
+        }
         res.push({
           name: statusCode,
           description: responses[statusCode].description,
+          schema:
+            responses[statusCode]?.['content']?.['application/json']?.[
+              'schema'
+            ],
         })
       })
     }
